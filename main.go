@@ -2,32 +2,25 @@ package main
 
 import "fmt"
 
-func add(a int, b int) int {
-	return a + b
-}
-
-func multiply(a, b int) int {
-	return a * b
-}
-
-func divide(dividend, divisor int) (int, error) {
-	if divisor == 0 {
-		return 0, fmt.Errorf("division by zero is not allowed")
-	}
-	return dividend / divisor, nil
+type User struct {
+	Name  string
+	Age   int
+	Email string
 }
 
 func main() {
-	sum := add(5, 3)
-	fmt.Println("Sum:", sum)
-
-	product := multiply(5, 3)
-	fmt.Println("Product:", product)
-
-	quotient, err := divide(10, 2)
-	if err != nil {
-		fmt.Println("Error:", err)
-	} else {
-		fmt.Println("Quotient:", quotient)
+	user1 := User{
+		Name:  "Alice",
+		Age:   20,
+		Email: "alice@wonderland.com",
 	}
+
+	user2 := User{"Bob", 25, "bob@robert.com"}
+	user3 := User{Name: "Charlie", Age: 30, Email: "charlie@chaplin.com"}
+
+	fmt.Println("User 1:", user1)
+	fmt.Println("User 2:", user2)
+	fmt.Println("User 3:", user3)
+
+	fmt.Println(user1.Name, "is", user1.Age, "years old.")
 }
