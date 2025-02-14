@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	"sync"
 	"time"
 )
 
-func printMessage(msg string) {
+func printMessage(msg string, wg *sync.WaitGroup) {
+	defer wg.Done()
 	for i := 1; i <= 5; i++ {
 		fmt.Println(msg, i)
 		time.Sleep(500 * time.Millisecond)
@@ -13,10 +15,11 @@ func printMessage(msg string) {
 }
 
 func main() {
-	go printMessage("Hello from goroutine")
+	var wg sync.WaitGroup
 
-	for i := 1; i <= 5; i++ {
-		fmt.Println("Main function", i)
-		time.Sleep(500 * time.Millisecond)
-	}
+	wg.Add(1)
+	go printMessage("Hello from goroutine", &wg)
+
+	wg.Wait()
+	fmt.Println("All goroutines completed!")
 }
