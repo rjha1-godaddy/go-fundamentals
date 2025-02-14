@@ -2,23 +2,19 @@ package main
 
 import "fmt"
 
-type Rectangle struct {
-	Width, Height float64
-}
-
-func (r Rectangle) Area() float64 {
-	return r.Width * r.Height
-}
-
-func (r Rectangle) Perimeter() float64 {
-	return 2 * (r.Width + r.Height)
-}
-
 func main() {
-	rect := Rectangle{Width: 10, Height: 5}
+	fruits := []string{"Apple", "Banana", "Cherry"}
 
-	fmt.Println("Rectangle Width:", rect.Width)
-	fmt.Println("Rectangle Height:", rect.Height)
-	fmt.Println("Area:", rect.Area())
-	fmt.Println("Perimeter:", rect.Perimeter())
+	fruits = append(fruits, "Orange", "Grape")
+
+	fmt.Println("Fruits:", fruits)
+
+	fruits[1] = "Pineapple"
+
+	for i, fruit := range fruits {
+		fmt.Printf("Index %d: %s\n", i, fruit)
+	}
+
+	subset := fruits[1:4]
+	fmt.Println("Subset:", subset)
 }
