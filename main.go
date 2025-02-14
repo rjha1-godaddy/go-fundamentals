@@ -2,24 +2,15 @@ package main
 
 import (
 	"fmt"
-	"sync"
-	"time"
+	"net/http"
 )
 
-func printMessage(msg string, wg *sync.WaitGroup) {
-	defer wg.Done()
-	for i := 1; i <= 5; i++ {
-		fmt.Println(msg, i)
-		time.Sleep(500 * time.Millisecond)
-	}
+func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Hello from inside a container!")
 }
 
 func main() {
-	var wg sync.WaitGroup
-
-	wg.Add(1)
-	go printMessage("Hello from goroutine", &wg)
-
-	wg.Wait()
-	fmt.Println("All goroutines completed!")
+	http.HandleFunc("/", handler)
+	fmt.Println("Server running on port 8080")
+	http.ListenAndServe(":8080", nil)
 }
