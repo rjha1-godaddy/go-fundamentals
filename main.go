@@ -3,18 +3,26 @@ package main
 import "fmt"
 
 func main() {
-	fruits := []string{"Apple", "Banana", "Cherry"}
-
-	fruits = append(fruits, "Orange", "Grape")
-
-	fmt.Println("Fruits:", fruits)
-
-	fruits[1] = "Pineapple"
-
-	for i, fruit := range fruits {
-		fmt.Printf("Index %d: %s\n", i, fruit)
+	userScores := map[string]int{
+		"Alice": 95,
+		"Bob":   85,
+		"Eve":   90,
 	}
 
-	subset := fruits[1:4]
-	fmt.Println("Subset:", subset)
+	userScores["Charlie"] = 88
+
+	score, exists := userScores["Bob"]
+	if exists {
+		fmt.Println("Bob's score:", score)
+	} else {
+		fmt.Println("Bob not found")
+	}
+
+	fmt.Println("All user scores:")
+	for user, score := range userScores {
+		fmt.Printf("%s: %d\n", user, score)
+	}
+
+	delete(userScores, "Eve")
+	fmt.Println("After deletion:", userScores)
 }
