@@ -1,28 +1,48 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
+
+var (
+	ErrInsufficientFunds = errors.New("insufficient funds")
+	ErrNegativeAmount    = errors.New("amount cannot be negative")
+)
+
+type Account struct {
+	Balance float64
+}
+
+func (a *Account) Withdraw(amount float64) error {
+	if amount < 0 {
+		return fmt.Errorf("withdrawal failed: %w", ErrNegativeAmount)
+	}
+	if amount > a.Balance {
+		return fmt.Errorf("withdrawal failed: %w", ErrInsufficientFunds)
+	}
+
+	a.Balance -= amount
+	return nil
+}
 
 func main() {
-	userScores := map[string]int{
-		"Alice": 95,
-		"Bob":   85,
-		"Eve":   90,
+	acc := &Account{Balance: 100}
+
+	transactions := []float64{50, 200, -10}
+
+	for _, amount := range transactions {
+		err := acc.Withdraw(amount)
+		if err != nil {
+			if errors.Is(err, ErrInsufficientFunds) {
+				fmt.Println("Error: You don't have enough balance.")
+			} else if errors.Is(err, ErrNegativeAmount) {
+				fmt.Println("Error: Invalid amount entered.")
+			} else {
+				fmt.Println("Error:", err)
+			}
+		} else {
+			fmt.Println("Withdrawal successful! New Balance:", acc.Balance)
+		}
 	}
-
-	userScores["Charlie"] = 88
-
-	score, exists := userScores["Bob"]
-	if exists {
-		fmt.Println("Bob's score:", score)
-	} else {
-		fmt.Println("Bob not found")
-	}
-
-	fmt.Println("All user scores:")
-	for user, score := range userScores {
-		fmt.Printf("%s: %d\n", user, score)
-	}
-
-	delete(userScores, "Eve")
-	fmt.Println("After deletion:", userScores)
 }
